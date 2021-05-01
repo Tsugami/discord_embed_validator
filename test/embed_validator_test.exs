@@ -42,4 +42,12 @@ defmodule DiscordEmbedValidatorTest do
     sut = DiscordEmbedValidator.valid?(valid_url)
     assert Map.equal?(sut, valid_url)
   end
+
+  test "should trigger an error when invalid is provided" do
+    invalid_url = %{url: "invalid_url"}
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{url: invalid_url})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{url: 1})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{url: %{}})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{url: ""})
+  end
 end
