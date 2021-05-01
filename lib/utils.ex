@@ -5,7 +5,7 @@ defmodule DiscordEmbedValidator.Utils do
     Check if a string is a URL
 
     Examples:
-      iex> DiscordEmbedValidator.Utils.is_url("http://google.com/")
+      iex> DiscordEmbedValidator.Utils.is_url("https://elixir-lang.org/docs.html")
       true
 
       iex> DiscordEmbedValidator.Utils.is_url("invalid_url")

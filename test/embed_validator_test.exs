@@ -36,4 +36,10 @@ defmodule DiscordEmbedValidatorTest do
     big_description = String.duplicate("invalid_description", 1000)
     {:error, _reason} = DiscordEmbedValidator.valid?(%{title: big_description})
   end
+
+  test "should return the embed when valid url is provided" do
+    valid_url = %{url: "https://elixir-lang.org/docs.html"}
+    sut = DiscordEmbedValidator.valid?(valid_url)
+    assert Map.equal?(sut, valid_url)
+  end
 end
