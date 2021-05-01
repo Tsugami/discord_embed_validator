@@ -1,4 +1,4 @@
-# EmbedValidator
+# DiscordEmbedValidator
 
 **TODO: Add description**
 

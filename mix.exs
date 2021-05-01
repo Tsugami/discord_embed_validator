@@ -1,9 +1,9 @@
-defmodule EmbedValidator.MixProject do
+defmodule DiscordEmbedValidator.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :embed_validator,
+      app: :discord_embed_validator,
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,

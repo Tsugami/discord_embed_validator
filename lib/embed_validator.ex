@@ -1,9 +1,9 @@
-defmodule EmbedValidator do
+defmodule DiscordEmbedValidator do
   alias Skooma.Validators
 
 
   @moduledoc """
-  Documentation for `EmbedValidator`.
+  Documentation for `DiscordEmbedValidator`.
   """
 
   @doc """
@@ -11,7 +11,7 @@ defmodule EmbedValidator do
 
   ## Examples
 
-      iex> EmbedValidator.valid?(%{description: "my embed description", title: "my embed title"})
+      iex> DiscordEmbedValidator.valid?(%{description: "my embed description", title: "my embed title"})
       %{ description: "my embed description", title: "my embed title"}
   """
 
