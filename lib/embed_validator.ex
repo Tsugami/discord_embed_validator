@@ -34,7 +34,8 @@ defmodule DiscordEmbedValidator do
     %{
       title: [:string, :not_required, Validators.max_length(256)],
       description: [:string, :not_required, Validators.max_length(2048)],
-      url: [:string, :not_required, &(Utils.is_url(&1))]
+      url: [:string, :not_required, &(Utils.is_url(&1))],
+      timestamp: [:string, :not_required, &(Utils.is_iso8601(&1))]
     }
   end
 

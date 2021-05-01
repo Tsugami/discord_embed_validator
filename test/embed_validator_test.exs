@@ -50,4 +50,18 @@ defmodule DiscordEmbedValidatorTest do
     {:error, _reason} = DiscordEmbedValidator.valid?(%{url: %{}})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{url: ""})
   end
+
+  test "should return the embed valid timestmap is provided" do
+    valid_timestamp = %{timestamp: "2015-01-23"}
+    sut = DiscordEmbedValidator.valid?(valid_timestamp)
+    assert Map.equal?(sut, valid_timestamp)
+  end
+
+  test "should trigger an error when timestamp is not ISO8601 timestamp" do
+    invalid_timestamp = %{timestamp: "invalid_timestamp"}
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: invalid_timestamp})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: 1})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: %{}})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: ""})
+  end
 end
