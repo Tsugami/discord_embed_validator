@@ -1,7 +1,6 @@
-# DiscordEmbedValidator
+# DiscordEmbedValidator - WIP
 
-**TODO: Add description**
-
+Lib for validate Discord Embed Map/Struct inspired by [discord-embed-validator](https://github.com/SwitchbladeBot/discord-embed-validator)
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
@@ -10,12 +9,11 @@ by adding `embed_validator` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:embed_validator, "~> 0.1.0"}
+    {:discord_embed_validator, "~> 0.1.0"}
   ]
 end
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/embed_validator](https://hexdocs.pm/embed_validator).
-
+be found at [https://hexdocs.pm/discord_embed_validator](https://hexdocs.pm/discord_embed_validator).
