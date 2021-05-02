@@ -12,7 +12,7 @@ defmodule DiscordEmbedValidator do
   ## Examples
 
       iex> DiscordEmbedValidator.valid?(%{description: "my embed description", title: "my embed title"})
-      %{ description: "my embed description", title: "my embed title"}
+      %{description: "my embed description", title: "my embed title"}
   """
 
   def valid? (embed) do
