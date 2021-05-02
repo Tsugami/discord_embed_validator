@@ -20,15 +20,14 @@ defmodule DiscordEmbedValidator do
   """
 
   def valid? (embed) do
-    if is_struct(embed) do
-      do_valid?(Map.from_struct(embed))
-    else
-      do_valid?(embed)
+    cond do
+      is_struct(embed) ->
+        embed
+        |> Map.from_struct
+        |> valid?
+      is_map(embed) ->
+        Skooma.valid?(embed, valid_embed_schema())
     end
-  end
-
-  defp do_valid? (embed) do
-    Skooma.valid?(embed, valid_embed_schema())
   end
 
   defp valid_embed_schema do
