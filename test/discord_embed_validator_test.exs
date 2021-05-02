@@ -6,13 +6,13 @@ defmodule DiscordEmbedValidatorTest do
   test "should return the embed when is empty" do
     embed = %{}
     sut = DiscordEmbedValidator.valid?(embed)
-    assert Map.equal?(sut, embed)
+    assert sut == :ok
   end
 
   test "should return the embed when valid title is provided" do
-    title_embed = %{title: "valid_title"}
-    sut = DiscordEmbedValidator.valid?(title_embed)
-    assert Map.equal?(sut, title_embed)
+    valid_title_embed = %{title: "valid_title"}
+    sut = DiscordEmbedValidator.valid?(valid_title_embed)
+    assert sut == :ok
   end
 
   test "should trigger an error when invalid title is provided" do
@@ -27,9 +27,9 @@ defmodule DiscordEmbedValidatorTest do
   end
 
   test "should return the embed when valid description is provided" do
-    valid_description = %{description: "any_description"}
-    sut = DiscordEmbedValidator.valid?(valid_description)
-    assert Map.equal?(sut, valid_description)
+    valid_description_embed = %{description: "any_description"}
+    sut = DiscordEmbedValidator.valid?(valid_description_embed)
+    assert sut == :ok
   end
 
   test "should trigger an error when description is must great" do
@@ -40,35 +40,33 @@ defmodule DiscordEmbedValidatorTest do
   test "should return the embed when valid url is provided" do
     valid_url = %{url: "https://elixir-lang.org/docs.html"}
     sut = DiscordEmbedValidator.valid?(valid_url)
-    assert Map.equal?(sut, valid_url)
+    assert sut == :ok
   end
 
   test "should trigger an error when invalid is provided" do
-    invalid_url = %{url: "invalid_url"}
-    {:error, _reason} = DiscordEmbedValidator.valid?(%{url: invalid_url})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{url: "invalid_url"})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{url: 1})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{url: %{}})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{url: ""})
   end
 
   test "should return the embed valid timestmap is provided" do
-    valid_timestamp = %{timestamp: "2015-01-23"}
-    sut = DiscordEmbedValidator.valid?(valid_timestamp)
-    assert Map.equal?(sut, valid_timestamp)
+    valid_timestamp_embed = %{timestamp: "2015-01-23"}
+    sut = DiscordEmbedValidator.valid?(valid_timestamp_embed)
+    assert sut == :ok
   end
 
   test "should trigger an error when timestamp is not ISO8601 timestamp" do
-    invalid_timestamp = %{timestamp: "invalid_timestamp"}
-    {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: invalid_timestamp})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: "invalid_timestamp"})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: 1})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: %{}})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: ""})
   end
 
   test "should return the embed when valid color is provided" do
-    valid_color = %{color: 2_423_523}
-    sut = DiscordEmbedValidator.valid?(valid_color)
-    assert Map.equal?(sut, valid_color)
+    valid_color_embed = %{color: 2_423_523}
+    sut = DiscordEmbedValidator.valid?(valid_color_embed)
+    assert sut == :ok
   end
 
   test "should trigger an error when invalid color is provided" do

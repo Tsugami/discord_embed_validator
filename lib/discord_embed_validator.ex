@@ -12,9 +12,10 @@ defmodule DiscordEmbedValidator do
   ## Examples
 
       iex> DiscordEmbedValidator.valid?(%{description: "my embed description", title: "my embed title"})
-      %{description: "my embed description", title: "my embed title"}
+      :ok
 
-      iex>{:error, _reason} = DiscordEmbedValidator.valid?(%{description: "my embed description", title: 11})
+      iex> DiscordEmbedValidator.valid?(%{description: "my embed description", title: 11})
+      {:error, ["Expected STRING, got INTEGER 11, at title"]}
 
   """
 
@@ -27,10 +28,7 @@ defmodule DiscordEmbedValidator do
   end
 
   defp do_valid? (embed) do
-    case Skooma.valid?(embed, valid_embed_schema()) do
-      {:error, reason} -> {:error, reason}
-      :ok -> embed
-    end
+    Skooma.valid?(embed, valid_embed_schema())
   end
 
   defp valid_embed_schema do
