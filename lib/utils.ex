@@ -15,7 +15,7 @@ defmodule DiscordEmbedValidator.Utils do
       false
   """
 
-  def is_url(str) do
+  def is_url(str) when is_binary(str) do
     uri = URI.parse(str)
     case uri do
       %URI{scheme: nil} -> false
@@ -25,6 +25,7 @@ defmodule DiscordEmbedValidator.Utils do
     end
   end
 
+  def is_url(_any), do: false
   @doc """
     Check is if timestamp is an ISO8601 Timestamp.
 
@@ -41,12 +42,14 @@ defmodule DiscordEmbedValidator.Utils do
       false
   """
 
-  def is_iso8601(timestamp) do
+  def is_iso8601(timestamp) when is_binary(timestamp) do
     case Date.from_iso8601(timestamp) do
       {:ok, _date} -> true
       {:error, _reason} -> false
     end
   end
+
+  def is_iso8601(_timestamp), do: false
 
   @doc """
     Check if color is valid

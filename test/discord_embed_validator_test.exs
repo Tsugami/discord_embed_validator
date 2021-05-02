@@ -43,7 +43,7 @@ defmodule DiscordEmbedValidatorTest do
     assert sut == :ok
   end
 
-  test "should trigger an error when invalid is provided" do
+  test "should trigger an error when invalid url is provided" do
     {:error, _reason} = DiscordEmbedValidator.valid?(%{url: "invalid_url"})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{url: 1})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{url: %{}})
@@ -74,5 +74,11 @@ defmodule DiscordEmbedValidatorTest do
     {:error, _reason} = DiscordEmbedValidator.valid?(%{color: -1})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{color: %{}})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{color: ""})
+  end
+
+  test "should return :ok when footer has valid text" do
+    footer_embed = %{footer: %{text: "valid text"}}
+    sut = DiscordEmbedValidator.valid?(footer_embed)
+    assert sut == :ok
   end
 end
