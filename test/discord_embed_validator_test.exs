@@ -64,4 +64,17 @@ defmodule DiscordEmbedValidatorTest do
     {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: %{}})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{timestamp: ""})
   end
+
+  test "should return the embed when valid color is provided" do
+    valid_color = %{color: 2_423_523}
+    sut = DiscordEmbedValidator.valid?(valid_color)
+    assert Map.equal?(sut, valid_color)
+  end
+
+  test "should trigger an error when invalid color is provided" do
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{color: "invalid_color"})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{color: -1})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{color: %{}})
+    {:error, _reason} = DiscordEmbedValidator.valid?(%{color: ""})
+  end
 end

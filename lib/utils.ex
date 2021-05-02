@@ -1,4 +1,5 @@
 defmodule DiscordEmbedValidator.Utils do
+  import DiscordEmbedValidator.Guard, only: [between: 3]
   @moduledoc false
 
   @doc """
@@ -46,4 +47,24 @@ defmodule DiscordEmbedValidator.Utils do
       {:error, _reason} -> false
     end
   end
+
+  @doc """
+    Check if color is valid
+
+    Returns `boolean`.
+
+
+     Examples:
+      iex> DiscordEmbedValidator.Utils.is_color(3254)
+      true
+
+      iex> DiscordEmbedValidator.Utils.is_color("invalid_color")
+      false
+  """
+
+  def is_color(color)
+    when is_integer(color) and between(color, 0, 16_777_215),
+    do: true
+
+  def is_color(_color), do: false
 end
