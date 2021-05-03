@@ -1,5 +1,5 @@
 defmodule DiscordEmbedValidator do
-  # alias Skooma.Validators
+  alias Skooma.Validators
   alias DiscordEmbedValidator.Utils
 
 
@@ -28,34 +28,27 @@ defmodule DiscordEmbedValidator do
   end
 
   defp validate (embed) do
-    case Vex.validate(embed, valid_embed_schema()) do
-      {:ok, _data} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
+    Skooma.valid?(embed, valid_embed_schema())
   end
 
   defp valid_embed_schema do
+    optional_url_value = [:string, :not_required, &Utils.is_url/1]
+
     # footer_schema = %{
     #   text: :string,
     #   # icon_url: optional_url_value,
     #   # proxy_icon_url: optional_url_value
     # }
 
-    # %{
-    #   title: [:string, :not_required, Validators.max_length(256)],
-    #   description: [:string, :not_required, Validators.max_length(2048)],
-    #   url: optional_url_value,
-    #   timestamp: [:string, :not_required, &(Utils.is_iso8601(&1))],
-    #   color: [:number, :not_required, &(Utils.is_color(&1))],
-    #   footer: [footer_schema, :not_required]
-    # }
+    valid_embed_schema = %{
+      title: [:string, :not_required, Validators.max_length(256)],
+      description: [:string, :not_required, Validators.max_length(2048)],
+      url: optional_url_value,
+      timestamp: [:string, :not_required, &Utils.is_iso8601/1],
+      color: [:number, :not_required, &Utils.is_color/1],
+      # footer: [footer_schema, :not_required]
+    }
 
-    [
-      title: [length: [max: 256]],
-      description: [length: [max: 2048]],
-      url: [by: [function: &Utils.is_url/1, allow_nil: true]],
-      timestamp: [by: [function: &Utils.is_iso8601/1, allow_nil: true]],
-      color: [by: [function: &Utils.is_color/1, allow_nil: true]]
-    ]
+    valid_embed_schema
   end
 end
