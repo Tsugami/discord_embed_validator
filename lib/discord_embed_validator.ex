@@ -2,6 +2,7 @@ defmodule DiscordEmbedValidator do
   alias Skooma.Validators
   alias DiscordEmbedValidator.Utils
 
+  @url_schema [:string, :not_required, &Utils.is_url/1]
 
   @moduledoc """
   Documentation for `DiscordEmbedValidator`.
@@ -28,45 +29,62 @@ defmodule DiscordEmbedValidator do
   end
 
   defp validate(embed) do
-    validate(embed, [:body, :footer], :ok)
-  end
-
-  defp validate(embed, [head | tail], :ok) do
-    result = handle_validate_field(head, embed)
-    validate(embed, tail, result)
-  end
-
-  defp validate(_embed, [], result), do: result
-
-  defp validate(_embed, _check, {:error, reason}) do
-    {:error, reason}
-  end
-
-  defp handle_validate_field(:body, embed) do
     schema = %{
       title: [:string, :not_required, Validators.max_length(256)],
       description: [:string, :not_required, Validators.max_length(2048)],
-      url: [:string, :not_required, &Utils.is_url/1],
+      url: @url_schema,
       timestamp: [:string, :not_required, &Utils.is_iso8601/1],
       color: [:number, :not_required, &Utils.is_color/1],
+      fields: [:list, :map, :not_required, &field_schema/0],
+      footer: [:map, :not_required, &footer_schema/0],
+      image: [:map, :not_required, &proxy_schema/0],
+      thumbnail: [:map, :not_required, &proxy_schema/0],
+      video: [:map, :not_required, &proxy_schema/0],
+      provider: [:map, :not_required, &provider_schema/0],
+      author: [:map, :not_required, &author_schema/0],
     }
 
     Skooma.valid?(embed, schema)
   end
 
-  defp handle_validate_field(:footer, embed) do
-    case Map.get(embed, :footer) do
-      nil -> :ok
-      footer ->
-        url_schema = [:string, :not_required, &Utils.is_url/1]
+  defp field_schema do
+    %{
+      name: :string,
+      value: :string,
+      inline: [:bool, :not_required]
+    }
+  end
 
-        footer_schema = %{
-          text: :string,
-          icon_url: url_schema,
-          proxy_icon_url: url_schema
-        }
+  defp footer_schema do
+    %{
+      text: :string,
+      icon_url: @url_schema,
+      proxy_icon_url: @url_schema
+    }
+  end
 
-        Skooma.valid?(footer, footer_schema)
-    end
+  defp proxy_schema do
+    %{
+      url: @url_schema,
+      name: [:string, :not_required],
+      icon_url: [:string, :not_required],
+      proxy_icon_url: [:string, :not_required]
+    }
+  end
+
+  defp provider_schema do
+    %{
+      url: @url_schema,
+      name: [:string, :not_required]
+    }
+  end
+
+  defp author_schema do
+    %{
+      url: @url_schema,
+      name: [:string, :not_required],
+      icon_url: [:string, :not_required],
+      proxy_icon_url: [:string, :not_required]
+    }
   end
 end
