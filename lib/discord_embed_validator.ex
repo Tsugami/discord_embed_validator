@@ -44,7 +44,10 @@ defmodule DiscordEmbedValidator do
       author: [:map, :not_required, &author_schema/0],
     }
 
-    Skooma.valid?(embed, schema)
+    case Skooma.valid?(embed, schema) do
+      :ok -> total_length_validator(embed)
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   defp field_schema do
@@ -91,4 +94,28 @@ defmodule DiscordEmbedValidator do
   defp heading_length_validator, do: Validators.max_length(256)
 
   defp text_length_validator, do: Validators.max_length(1024)
+
+  defp total_length_validator(embed) do
+    fields = Map.get(embed, :fields, [])
+    fields_length = Enum.reduce(fields, 0, fn field, acc ->
+      name = Utils.fetch_value_length(field, :name)
+      value = Utils.fetch_value_length(field, :value)
+
+      acc + name + value
+    end)
+
+    total = Enum.sum([
+      fields_length,
+      Utils.fetch_value_length(embed, :title),
+      Utils.fetch_value_length(embed, :description),
+      Utils.fetch_value_length(embed, [:footer, :text]),
+      Utils.fetch_value_length(embed, [:author, :name]),
+    ])
+
+    if total > 6000 do
+      {:error, "the characters in all title, description, field.name, field.value, footer.text, and author.name fields must not exceed 6000 characters in total"}
+    else
+      :ok
+    end
+  end
 end

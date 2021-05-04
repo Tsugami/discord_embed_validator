@@ -70,4 +70,32 @@ defmodule DiscordEmbedValidator.Utils do
     do: true
 
   def is_color(_color), do: false
+
+  @doc """
+   Get the length of an prop on Map
+
+    Returns `number`.
+
+
+     Examples:
+      iex> DiscordEmbedValidator.Utils.fetch_value_length(%{bar: "foo"}, :bar)
+      3
+
+      iex> DiscordEmbedValidator.Utils.fetch_value_length(%{key: %{bar: "foo-bar"}}, [:key, :bar])
+      7
+  """
+
+  def fetch_value_length(map, key) when is_atom(key) do
+    case Map.get(map, key, '') do
+      val when is_binary(val) -> String.length(val)
+      _ -> 0
+    end
+  end
+
+  def fetch_value_length(map, keys) when is_list(keys) do
+    case get_in(map, keys) do
+      val when is_binary(val) -> String.length(val)
+      _ -> 0
+    end
+  end
 end
