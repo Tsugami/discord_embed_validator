@@ -32,6 +32,7 @@ defmodule DiscordEmbedValidator do
     schema = %{
       title: [:string, :not_required, heading_length_validator()],
       description: [:string, :not_required, text_length_validator()],
+      type: [:string, :not_required, &rich_validator/1],
       url: @url_schema,
       timestamp: [:string, :not_required, &timestamp_validator/1],
       color: [:number, :not_required, &color_validator/1],
@@ -143,4 +144,14 @@ defmodule DiscordEmbedValidator do
     end
   end
 
+  defp rich_validator (val) do
+    rich_types = ["rich", "image", "video", "gifv", "article", "link"]
+
+    if Enum.member?(rich_types, val) do
+      :ok
+    else
+      rich_types_str = Enum.join(rich_types, ", ")
+      {:error, "#{val} is not among the available types: #{rich_types_str}"}
+    end
+  end
 end
