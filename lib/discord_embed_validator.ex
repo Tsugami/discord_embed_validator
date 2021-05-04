@@ -35,7 +35,7 @@ defmodule DiscordEmbedValidator do
       url: @url_schema,
       timestamp: [:string, :not_required, &timestamp_validator/1],
       color: [:number, :not_required, &color_validator/1],
-      fields: [:list, :map, :not_required, &field_schema/0],
+      fields: [:list, :map, :not_required, &field_schema/0, &fields_validator/1],
       footer: [:map, :not_required, &footer_schema/0],
       image: [:map, :not_required, &proxy_schema/0],
       thumbnail: [:map, :not_required, &proxy_schema/0],
@@ -134,4 +134,13 @@ defmodule DiscordEmbedValidator do
       {:error, "timestamp invalid, timestamp should to be ISO8601 Timestamp"}
     end
   end
+
+  defp fields_validator (fields) do
+    if length(fields) >= 25 do
+      :ok
+    else
+      {:error, "fields cannot be larger than 25"}
+    end
+  end
+
 end
