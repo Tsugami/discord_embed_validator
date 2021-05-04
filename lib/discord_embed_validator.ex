@@ -30,8 +30,8 @@ defmodule DiscordEmbedValidator do
 
   defp validate(embed) do
     schema = %{
-      title: [:string, :not_required, Validators.max_length(256)],
-      description: [:string, :not_required, Validators.max_length(2048)],
+      title: [:string, :not_required, heading_length_validator()],
+      description: [:string, :not_required, text_length_validator()],
       url: @url_schema,
       timestamp: [:string, :not_required, &Utils.is_iso8601/1],
       color: [:number, :not_required, &Utils.is_color/1],
@@ -49,8 +49,8 @@ defmodule DiscordEmbedValidator do
 
   defp field_schema do
     %{
-      name: :string,
-      value: :string,
+      name: [:string, heading_length_validator()],
+      value: [:string, text_length_validator()],
       inline: [:bool, :not_required]
     }
   end
@@ -82,9 +82,13 @@ defmodule DiscordEmbedValidator do
   defp author_schema do
     %{
       url: @url_schema,
-      name: [:string, :not_required],
+      name: [:string, :not_required, heading_length_validator()],
       icon_url: [:string, :not_required],
       proxy_icon_url: [:string, :not_required]
     }
   end
+
+  defp heading_length_validator, do: Validators.max_length(256)
+
+  defp text_length_validator, do: Validators.max_length(1024)
 end

@@ -87,4 +87,15 @@ defmodule DiscordEmbedValidatorTest do
     {:error, _reason} = DiscordEmbedValidator.valid?(%{footer: %{text: :atom}})
     {:error, _reason} = DiscordEmbedValidator.valid?(%{footer: %{text: %{}}})
   end
+
+  test "should return :ok when footer has valid text and icon_url" do
+    footer_embed = %{footer: %{text: "valid text", icon_url: "https://elixir-lang.org/docs.html"}}
+    sut = DiscordEmbedValidator.valid?(footer_embed)
+    assert sut == :ok
+  end
+
+  test "should trigger an error when the footer has no text but has an icon_url" do
+    invalid_footer_embed = %{footer: %{icon_url: "https://elixir-lang.org/docs.html"}}
+    {:error, _reason} = DiscordEmbedValidator.valid?(invalid_footer_embed)
+  end
 end
