@@ -33,8 +33,8 @@ defmodule DiscordEmbedValidator do
       title: [:string, :not_required, heading_length_validator()],
       description: [:string, :not_required, text_length_validator()],
       url: @url_schema,
-      timestamp: [:string, :not_required, &Utils.is_iso8601/1],
-      color: [:number, :not_required, &Utils.is_color/1],
+      timestamp: [:string, :not_required, &timestamp_validator/1],
+      color: [:number, :not_required, &color_validator/1],
       fields: [:list, :map, :not_required, &field_schema/0],
       footer: [:map, :not_required, &footer_schema/0],
       image: [:map, :not_required, &proxy_schema/0],
@@ -116,6 +116,22 @@ defmodule DiscordEmbedValidator do
       {:error, "the characters in all title, description, field.name, field.value, footer.text, and author.name fields must not exceed 6000 characters in total"}
     else
       :ok
+    end
+  end
+
+  defp color_validator (val) do
+    if Utils.is_color(val) do
+      :ok
+    else
+      {:error, "color is invalid!"}
+    end
+  end
+
+  defp timestamp_validator (val) do
+    if Utils.is_iso8601(val) do
+      :ok
+    else
+      {:error, "timestamp invalid, timestamp should to be ISO8601 Timestamp"}
     end
   end
 end
