@@ -17,6 +17,7 @@ defmodule DiscordEmbedValidator do
       :ok
   """
 
+  @spec valid?(term()) :: :ok | {:error, String.t()}
   def valid?(embed) do
     cond do
       is_struct(embed) ->
