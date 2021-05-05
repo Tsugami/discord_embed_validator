@@ -13,8 +13,13 @@ defmodule DiscordEmbedValidator do
 
   ## Examples
 
-      iex> DiscordEmbedValidator.valid?(%{description: "my embed description", title: "my embed title"})
+      iex> DiscordEmbedValidator.valid?(%{description: "bar", title: "foo"})
       :ok
+
+      iex> DiscordEmbedValidator.valid?(%{timestamp: "2015-01-23"})
+      :ok
+      iex> DiscordEmbedValidator.valid?(%{timestamp: "invalid_timestamp"})
+      {:error, ["timestamp invalid, timestamp should to be ISO8601 Timestamp"]}
   """
 
   @spec valid?(term()) :: :ok | {:error, String.t()}
